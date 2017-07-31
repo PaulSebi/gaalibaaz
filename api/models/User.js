@@ -14,9 +14,9 @@ module.exports = {
     passcode : {type : 'string'},
     details : {},
     leaderboards : {type : 'integer'},
-    // room : {
-    //     model : 'Room'
-    // }
+    room : {
+        model : 'Room'
+    }, 
   },
   
   beforeCreate : function(req, next){

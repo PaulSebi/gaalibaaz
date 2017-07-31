@@ -50,7 +50,12 @@ module.exports = {
 					callback({error : err, result :null});
 				}
 				else if(resp == null){
-					callback({error : 'no such user', result :null});
+                    req.body.leaderboards = 0;
+                    User.insert(req.body, function(err, resp){
+                        if(err)
+                            return res.json({error : err, result: null});
+                        res.json({error:null, result:resp});
+                    });
 				}
 				else callback(null, resp);
 			});

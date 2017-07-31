@@ -26,14 +26,21 @@ module.exports.routes = {
     view: 'homepage'
   },
 
+  // 'GET /games' : 'GaaliController.fetchToRate',
+
   'POST /dev/v0/gaali' : 'GaaliController.insert',
-  'GET /dev/v0/rateables' : 'GaaliController.fetchToRate',
-  'PUT /dev/v0/rateables' : 'GaaliController.updateRating',
+  'GET /dev/v0/rateables' : 'GaaliController.fetchToRate', //returns view rate.ejs
+  'PUT /dev/v0/rateables' : 'GaaliController.updateRating', 
   'GET /dev/v0/gaali/jumbled' : 'GaaliController.jumbled',
 
   'POST /dev/v0/users' : 'UserController.insert',
   'GET /dev/v0/users' : 'UserController.fetch',
   'POST /dev/v0/users/login' : 'UserController.login',  
-  'GET /dev/v0/users/leaderboards' : 'UserController.fetchLeaderBoard'
+  'GET /dev/v0/users/leaderboards' : 'UserController.fetchLeaderBoard',
+
+  '/dev/v0/gamerooms' : 'RoomController.loadRooms', //returns view gamerooms.ejs
+  'POST /dev/v0/rooms' : 'RoomController.insert',
+  'PUT /dev/v0/rooms' : 'RoomController.updateUsers',
+  'GET /dev/v0/rooms/subscribe' : 'RoomController.subscribe'
 
 };
