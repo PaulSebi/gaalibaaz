@@ -1,0 +1,13 @@
+<div class = "game">
+    <h1>Welcome</h1>
+    <% _.each(users, function(user, index){ %>
+        <div id = "user<%= index %>">
+            <h3><%= user.name %></h3>
+            <p><%= user.stars %></p>
+            <p><%= user.ready %></p>
+        </div>
+        <br><br>
+    <% }) %>
+    <br><br>
+    <p id="jumbled"></p>
+</div>

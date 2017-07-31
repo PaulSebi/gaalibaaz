@@ -1,0 +1,14 @@
+<div class = "rate">
+    <h2>Please Rate the following Gaalis</h2>
+    <% _.each(gaalis, function(gaali, index){ %>
+        
+        <div id="div<%= index %>">
+            <h3> <%= gaali.title %> </h3> <input type = "text" > <br>
+            <p hidden><%= gaali.id %></p>
+            <span hidden> <%= gaali.rated %> </span>
+            <h2 hidden> <%= gaali.ratedBy %> </h2>
+        </div>
+    <%  }); %>
+    <input id = "submitbutton" type= "button" name="submit" value ="submit" onclick="rate(this)">
+</div>
+<script src="/js/dependencies/rate.js"></script>
