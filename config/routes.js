@@ -39,8 +39,10 @@ module.exports.routes = {
   'GET /dev/v0/users/leaderboards' : 'UserController.fetchLeaderBoard',
 
   '/dev/v0/gamerooms' : 'RoomController.loadRooms', //returns view gamerooms.ejs
+  '/dev/v0/game' : 'RoomController.loadGame', //returns view game.ejs
+  '/dev/v0/rooms/playgame' : 'RoomController.playGame',
+  '/dev/v0/rooms/gaali' : 'RoomController.submitGaali',
   'POST /dev/v0/rooms' : 'RoomController.insert',
   'PUT /dev/v0/rooms' : 'RoomController.updateUsers',
   'GET /dev/v0/rooms/subscribe' : 'RoomController.subscribe'
-
 };

@@ -1,13 +1,26 @@
 <div class = "game">
-    <h1>Welcome</h1>
-    <% _.each(users, function(user, index){ %>
-        <div id = "user<%= index %>">
-            <h3><%= user.name %></h3>
-            <p><%= user.stars %></p>
-            <p><%= user.ready %></p>
-        </div>
-        <br><br>
-    <% }) %>
+    <h1>Welcome to Room&nbsp</h1><h1 id="roomId"><%= room.id %></h1>
+    <h3 style="display:inline-block"> Max Players <%= room.max_limit %> |</h3>
+    <h3 style="display:inline-block">Total Players</h3><h3 id= "total" style="display:inline-block"><%= room.total %></h3>
+    <!--<input style="display:inline-block" style="display:inline-block" type="button" id="logout" onclick="logout()" value="logout">-->
+    <br>
+    <p style="display:inline-block" id="timer"></p>
+    
+    <div id = "users">
+        <% _.each(users, function(user, index){ %>
+            <div id = "user<%= index %>">
+                <h3 style="display:inline-block"><%= user.username %></h3><span style="display:inline-block">&nbsp&nbsp|&nbsp&nbsp </span>
+                <p style="display:inline-block"><%= user.points %></p><span style="display:inline-block">&nbsp&nbsp|&nbsp&nbsp</span>
+                <p style="display:inline-block"><%= user.ready %></p>
+            </div>
+            <br><br>
+        <% }) %>
+    </div>
     <br><br>
+    <input type = "button" id="ready" onclick="ready()" value = "ready"/>
+    <br> 
     <p id="jumbled"></p>
+    <input type="text" id = "gaali" placeholder="enter gaali here">
+    <input type="button" id = "submitGaali" onclick="submitGaali()" value="submit" disabled/>
 </div>
+<script src = "/js/playgame.js"></script>

@@ -16,7 +16,7 @@ $(document).ready(function(){
                 break;
         }
     });
-})
+});
 
 function created(e){
     console.log(e);
@@ -24,12 +24,14 @@ function created(e){
 }
 
 function updated(e){
-    var room = document.getElementById('room'+e.id);
-    console.log('making changes', e.data);
-    room.getElementsByTagName('p')[2].innerHTML = e.data.total;
-    if(e.data.total==e.data.max_limit)
-        room.getElementsByTagName('input')[0].setAttribute('disabled', true);
-    else room.getElementsByTagName('input')[0].setAttribute('disabled', false);
+    if(e.data.newUser){
+        var room = document.getElementById('room'+e.id);
+        console.log('making changes', e.data, e.data.total, e.data.max_limit);
+        room.getElementsByTagName('p')[2].innerHTML = e.data.total;
+        if(e.data.total==e.data.max_limit)
+            room.getElementsByTagName('input')[0].createAttribute('disabled');
+        else room.getElementsByTagName('input')[0].removeAttribute('disabled');
+    }
 }
 
 function createRoom(){
@@ -43,6 +45,8 @@ function createRoom(){
         admin : true    
     }, function(res){
         console.log('res', res);
+        window.localStorage.setItem('roomAdmin', true);
+        window.location = '/dev/v0/game?id='+res.result.id;
     });
 }
 
@@ -58,5 +62,7 @@ function joinRoom(roomId){
         admin : false
     }, function(res){
         console.log('res', res);
+        window.localStorage.setItem('roomAdmin', false);
+        window.location = '/dev/v0/game?id='+room[0].innerHTML;
     });
 }

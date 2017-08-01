@@ -14,7 +14,7 @@ module.exports = {
                     users : [{
                         id : req.body.id,
                         username : req.body.username,
-                        stars : '*****',
+                        points : 0,
                         ready : false
                     }],
                     ready : 0,
@@ -25,9 +25,6 @@ module.exports = {
                         return res.json({error:err, result:null});
                     res.json({error:null, result:resp});
                 })
-            }
-            else{
-
             }    
         }
     },
@@ -45,14 +42,19 @@ module.exports = {
     },
 
     subscribe : function(req, res){
+        if(req.query){
+            console.log('requested', req.query);
+            Room.subscribe(req, req.query.id);
+            return res.json({error:null, result:{id:req.query.id, subscribed:true}});
+        }
         Room.watch(req);
-        Room.fetch({select:['id']}, function(err, resp){
+        Room.fetch({select:['id'], where:{}}, function(err, resp){
             if(err)
                 return res.json({error:err, result:null});
             else{
                 if(resp!=null){
                     Room.subscribe(req, _.pluck(resp, 'id'));
-                    return res.json({error:null, result:true});
+                    return res.json({error:null, result:{subscribed:true}});
                 }
                 else return res.json({error:'unknown error', result:null});
             }
@@ -61,12 +63,129 @@ module.exports = {
 
     updateUsers : function(req, res){
         if(req.method == 'PUT' && req.isSocket){
-            Room.updateUsers(req.body, function(err, resp){
+            if(typeof req.body.ready=='boolean'){
+                Room.ready(req.body, function(err, resp){
+                    if(err)
+                        return res.json({error:err, result:null});
+                    res.json({error:null, result:resp});
+                });
+            }
+            else{
+                Room.updateUsers(req.body, function(err, resp){
+                    if(err)
+                        return res.json({error:err, result:null});
+                    res.json({error:null, result:resp});
+                });
+            }
+        }
+        
+    },
+
+    loadGame : function(req, res){
+        console.log('query', req.query);
+        Room.fetch({id:req.query.id}, function(err, resp){
+            if(err)
+                return res.json({error:err, result:null});
+            resp = resp[0];
+            res.view('game', {
+                room : {
+                    id : resp.id,
+                    max_limit : resp.max_limit,
+                    total : resp.total
+                },
+                users : resp.users
+            });
+        });
+    },
+
+    playGame : function(req, res){
+        console.log('here', req.isSocket);
+        if(req.isSocket){
+            Room.gameOn({check:true, id:req.body.id}, function(err, resp){
+                console.log('socket');
                 if(err)
                     return res.json({error:err, result:null});
-                res.json({error:null, result:resp});
+                else if(resp.gameOne)
+                    return res.json(null, {error:null, result:{resp}});
+                async.waterfall([
+                    function(cb){
+                        var i = 0;
+                        console.log('inside');
+                        var timer = setInterval(function(){
+                            console.log(i, req.body.id);
+                            Room.message(req.body.id, {tick:i});
+                            i++;
+                            if(i>30){
+                                clearInterval(timer);
+                                cb(null,{success:true});
+                            }
+                        }, 1000);
+                    },
+                    function(cb){
+                        Room.message(req.body.id, {tick:-1});
+                        Room.fetch({id:req.body.id, select:['users']}, function(err, resp){
+                            if(err)
+                                return cb(err);
+                            var winner = {
+                                points : 0,
+                                username : '',
+                                id : ''
+                            }
+                            _.each(resp[0].users, function(user){
+                                if(user.points>winner.points){
+                                    winner.points = user.points;
+                                    winner.username = user.username;
+                                    winner.id = user.id;
+                                }
+                            });
+                            Room.message(req.body.id, {winner:winner});
+                            Room.destroy({id:req.body.id}, function(err, resp){
+                                if(err)
+                                    return res.json({error :err, result:null});
+                                return res.json(null, winner.id);
+                            });
+                        });
+                    }
+                ], function(err, results){
+                    res.json({error:null, result:null});
+                });  
             })
         }
+    },
+
+    submitGaali : function(req, res){
+        if(req.isSocket){
+            console.log('gaali',req.body);
+            async.waterfall([
+                function(cb){
+                    Gaali.fetch({title:req.body.gaali, select:['rated']}, function(err, resp){
+                        if(err)
+                            return cb('Not Accepted');
+                        else if(resp[0]){
+                            console.log(resp);
+                            cb(null, resp[0].rated);
+                        }
+                        else cb('no such gaali');
+                    });
+                },
+                function(rated, cb){
+                    if(rated>0){
+                        Room.points({
+                            roomId:req.body.roomId,
+                            userId:req.body.userId,
+                            points:rated
+                        }, function(err, resp){
+                            if(err)
+                                return cb({error:'unknown error', result:null});
+                            else cb(null, 'done')
+                        })
+                    }
+                }
+            ], function(err, results){
+                res.json({error:err, result:results});
+            });
+        }
     }
+
 };
 

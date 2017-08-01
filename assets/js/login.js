@@ -1,12 +1,6 @@
 function login(e) {
     var username = document.getElementById('username').value,
-        passcode = document.getElementById('passcode').value,
-        language = document.getElementById('language').value;
-
-    if(language != 'english' && language!='hinglish'){
-        alert('please check language should be english or hinglish');
-        returnl;
-    }
+        passcode = document.getElementById('passcode').value;
     
     fetch('/dev/v0/users/login', {
         method: 'post',
@@ -22,7 +16,7 @@ function login(e) {
         } else if (response.result) {
             console.log(typeof response.result);
             window.localStorage.setItem('user', JSON.stringify(response.result));
-            window.location = '/dev/v0/rateables?languages='+language;
+            window.location = '/dev/v0/rateables?languages=english';
         } else {
             alert('Try Again');
         }
