@@ -9,7 +9,6 @@ var bcrypt = require('bcrypt');
 
 module.exports = {
 	insert : function(req, res){
-        console.log('here', req.body);
         User.insert(req.body, function(err, resp){
             if(err)
                 return res.json({error : err, result: null});
@@ -60,8 +59,6 @@ module.exports = {
 				else callback(null, resp);
 			});
 		}, function(user, callback){
-
-                console.log(req.body.passcode, user.passcode);
 			bcrypt.compare(req.body.passcode, user.passcode, function(err, resp){
 				if(err){
 					callback({error : err, result :null});

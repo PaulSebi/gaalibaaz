@@ -31,7 +31,7 @@ module.exports.routes = {
   'POST /dev/v0/gaali' : 'GaaliController.insert',
   'GET /dev/v0/rateables' : 'GaaliController.fetchToRate', //returns view rate.ejs
   'PUT /dev/v0/rateables' : 'GaaliController.updateRating', 
-  'GET /dev/v0/gaali/jumbled' : 'GaaliController.jumbled',
+  // 'GET /dev/v0/gaali/jumbled' : 'GaaliController.jumbled',
 
   'POST /dev/v0/users' : 'UserController.insert',
   'GET /dev/v0/users' : 'UserController.fetch',
