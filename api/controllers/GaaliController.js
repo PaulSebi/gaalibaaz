@@ -52,7 +52,6 @@ module.exports = {
                     ratedBy : val.ratedBy+1
                 }
             }
-            console.log('update', update);
             Gaali.put(update, function(err, resp){
                 if(err)
                     return cb(err);
