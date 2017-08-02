@@ -1,11 +1,20 @@
 <div class = "game">
-    <h1>Welcome to Room&nbsp</h1><h1 id="roomId"><%= room.id %></h1>
+    <h1>Welcome to Boom&nbsp</h1><h1 id="roomId"><%= room.id %></h1>
     <h3 style="display:inline-block"> Max Players <%= room.max_limit %> |</h3>
     <h3 style="display:inline-block">Total Players</h3><h3 id= "total" style="display:inline-block"><%= room.total %></h3>
     <!--<input style="display:inline-block" style="display:inline-block" type="button" id="logout" onclick="logout()" value="logout">-->
     <br>
-    <p style="display:inline-block" id="timer"></p>
+    <p style="display:inline-block">Timer:&nbsp</p><p style="display:inline-block" id="timer">0</p>
     
+    <h4>Rules</h4>
+    <small>&nbsp&nbsp* Wait for the room to be full and</small><br>
+    <small>&nbsp&nbsp* All Players in room to be ready</small><br>
+    <small>&nbsp&nbsp* As soon as the last remaining player hits ready, you are set to go</small><br>
+    <small>&nbsp&nbsp* The timer will run for 30s</small><br>
+    <small>&nbsp&nbsp* Hurl as many single-word cusses as possible in the time frame</small><br>
+    <small>&nbsp&nbsp* Point is awarded if the word exists, continue either ways</small><br>
+    <small>&nbsp&nbsp* Player with highest points when timer runs out wins</small><br>
+
     <div id = "users">
         <% _.each(users, function(user, index){ %>
             <div id = "user<%= index %>">
