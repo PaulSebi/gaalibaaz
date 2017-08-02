@@ -20,5 +20,6 @@ function login(e) {
         } else {
             alert('Try Again');
         }
+        return false;
     });
 }

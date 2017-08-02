@@ -6,7 +6,7 @@ $(document).ready(function(){
     });
 
     io.socket.on('room', function(e){
-        // console.log('socket ', e);
+        console.log('socket ',e.verb, e.data);
         switch(e.verb){
             case 'updated' :
                 updated(e.data);
@@ -19,11 +19,11 @@ $(document).ready(function(){
                     $('#submitGaali').attr('disabled', true);
                 }
                 else if(e.data.winner){
-                    console.log('winner', e.data);
                     alert('Winner is ' + e.data.winner.username);
                     window.location = '/dev/v0/gamerooms';
                 }
-                
+                else if(e.data.gaali)
+                    alert('You were Called a '+e.data.gaali);
             default:
                 break;
         }
@@ -41,6 +41,7 @@ function updated(data){
         user.getElementsByTagName('p')[1].innerHTML = data.ready;
     }
     else if(data.start){
+        console.log('start playing');
         play();
     }
     else if(data.points){
@@ -65,10 +66,10 @@ function play(){
     $('#ready').attr('disabled', true);
     alert('TIme Starts Now!');
     $('#submitGaali').removeAttr('disabled');
-    io.socket.post('/dev/v0/rooms/playgame', {
-        id: $('#roomId').html()
-    }, function(res){
-    });
+    // io.socket.post('/dev/v0/rooms/playgame', {
+    //     id: $('#roomId').html()
+    // }, function(res){
+    // });
 }
 
 function submitGaali(){
@@ -79,6 +80,6 @@ function submitGaali(){
         gaali : $('#gaali').val()
     }, function(res){
         console.log(res);
-        $('#gaali').val="";
+        $('#gaali').val('');
     });
 }

@@ -12,7 +12,8 @@ module.exports = {
     total : {type : 'integer'},
     ready : {type : 'integer'},
     users : {type : 'array'},
-    gameOn : {type: 'boolean'}
+    gameOn : {type: 'boolean'},
+    usedGaali : {type : 'array'}
     //user : [{id:'xyz', username:'name', stars:'*****', ready:false}] 
   },
 
@@ -84,8 +85,10 @@ module.exports = {
                     cb(err);
                   else{
                       Room.publishUpdate(req.roomId, {id:req.userId, index:pos, ready:req.ready});
-                      if(room.ready==room.max_limit)
+                      if(room.ready==room.max_limit){
                         Room.publishUpdate(req.roomId, {start:true});
+                        sails.controllers.room.playGame({body:{id:req.roomId}});
+                      }
                       cb(null, 'ready updated');
                   }
               })
@@ -109,6 +112,9 @@ module.exports = {
                     req.points= user.points;
                   }
               });
+              if(!room.usedGaali)
+                room.usedGaali=[];
+              room.usedGaali.push(req.gaali);
               room.save(function(err){
                   if(err)
                     cb(err);

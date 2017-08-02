@@ -98,9 +98,9 @@ module.exports = {
         });
     },
 
-    playGame : function(req, res){
-        console.log('here', req.isSocket);
-        if(req.isSocket){
+    playGame : function(req){
+        // console.log('here', req.isSocket);
+        // if(req.isSocket){
             Room.gameOn({check:true, id:req.body.id}, function(err, resp){
                 console.log('socket');
                 if(err)
@@ -128,7 +128,7 @@ module.exports = {
                                 return cb(err);
                             var winner = {
                                 points : 0,
-                                username : '',
+                                username : 'noone',
                                 id : ''
                             }
                             _.each(resp[0].users, function(user){
@@ -141,23 +141,29 @@ module.exports = {
                             Room.message(req.body.id, {winner:winner});
                             Room.destroy({id:req.body.id}, function(err, resp){
                                 if(err)
-                                    return res.json({error :err, result:null});
-                                return res.json(null, winner.id);
+                                    return;
+                                return;
                             });
                         });
                     }
-                ], function(err, results){
-                    res.json({error:null, result:null});
-                });  
-            })
-        }
+                ]);  
+            });
+        // }
     },
 
     submitGaali : function(req, res){
         if(req.isSocket){
-            console.log('gaali',req.body);
             async.waterfall([
                 function(cb){
+                    Room.fetch({id:req.body.roomId, select:['usedGaali']}, function(err,resp){
+                        if(err)
+                            return cb(err);
+                        else if(!resp[0].usedGaali || resp[0].usedGaali.indexOf(req.body.gaali)==-1)
+                            cb(null, null);
+                        else return cb('already used');
+                    })
+                },
+                function(less, cb){
                     Gaali.fetch({title:req.body.gaali, select:['rated']}, function(err, resp){
                         if(err)
                             return cb('Not Accepted');
@@ -173,12 +179,14 @@ module.exports = {
                         Room.points({
                             roomId:req.body.roomId,
                             userId:req.body.userId,
-                            points:rated
+                            points:rated,
+                            gaali:req.body.gaali
                         }, function(err, resp){
                             if(err)
                                 return cb({error:'unknown error', result:null});
-                            else cb(null, 'done')
-                        })
+                            Room.message(req.body.roomId, {gaali:req.body.gaali}, req);
+                            cb(null, 'done')
+                        });
                     }
                 }
             ], function(err, results){
