@@ -33,12 +33,13 @@ module.exports = {
         Gaali.restrictedFetch(request, function(err, resp){
             if(err)
                 return res.json({error : err, result:null});
-            res.json({error:null, result:resp});
+            res.view('rate',{gaalis:resp});
         });
     },
     
     updateRating : function(req, res){
         var ids = [], updates = [];
+        console.log('requested', req.body);
         async.map(req.body, function(val, cb){
             var update = {
                 id : val.id,

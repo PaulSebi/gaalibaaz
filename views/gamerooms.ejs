@@ -1,0 +1,27 @@
+<div id="gamerooms">
+    <div id = "existing">
+        <% if(rooms!=null){ %>
+            <h4>Room# &nbsp|&nbsp&nbsp Max &nbsp|&nbsp Joined</h4>
+            <% _.each(rooms, function(room, index){ %>
+                <div id="room<%= room.id%>">
+                    <p style="display:inline-block"><%= room.id %></p>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+                    <p style="display:inline-block"><%= room.max_limit %></p>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+                    <p style="display:inline-block"><%= room.total %></p>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+                    <% if(room.max_limit == room.total){ %>
+                        <input type="button" value = "join" onclick="joinRoom('room<%= room.id%>')" disabled>
+                    <% } else { %>
+                        <input type="button" value = "join" onclick="joinRoom('room<%= room.id%>')">
+                    <% } %>
+                </div>
+                <br>
+            <% });%>
+        <% } %>
+    </div>
+    <br><br>
+    <div id = "new">
+        <h3> Enter Max Limit of Users  (2-4)</h3>
+        <input id="limit" type="text"/>
+        <input type = "button" onclick="createRoom()" value="submit">
+    </div>
+</div>
+<script src = "/js/rooms.js"></script>

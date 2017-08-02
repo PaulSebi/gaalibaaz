@@ -49,7 +49,7 @@ module.exports = {
         },
       function(count, cb){
           Gaali.find({id : {'!' : req.not}, language: req.languages, select:req.select}).limit(req.limit).skip(Math.random()*(count-req.limit)).exec(function(err, res){
-              console.log('retrieve\n', err, res,"\n\n", sk, count, "\n\n");
+              console.log('retrieve\n', res);
               if(err)
                 return cb(err);
               cb(null, res);
@@ -68,6 +68,7 @@ module.exports = {
       Gaali.update(req.id, req.update).exec(function(err, res){
         if(err)
           return callback(err);
+        console.log('res1',res);
         callback(null, res);
       });
     }
