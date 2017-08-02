@@ -6,12 +6,17 @@
  */
 
 module.exports = {
-    insert : function(req, res){
-        Gaali.insert(req.body
-        , function(err, resp){
+   insert : function(req, res){
+        async.map(req.body, function(gaali, cb){
+            Gaali.insert(gaali, function(err, resp){
+                if(err || resp == null)
+                    return cb(null);
+                cb(null, resp);
+            });
+        }, function(err, results){
             if(err)
-                return res.json({error : err, result : null});
-            res.json({error: null, result:{inserted : true, values : resp}});
+                return res.json({error:err, result:null});
+            res.json({error: null, result:{inserted : true, values : results}});
         });
     },
 
