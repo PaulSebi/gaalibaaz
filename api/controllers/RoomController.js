@@ -43,7 +43,6 @@ module.exports = {
 
     subscribe : function(req, res){
         if(req.query){
-            console.log('requested', req.query);
             Room.subscribe(req, req.query.id);
             return res.json({error:null, result:{id:req.query.id, subscribed:true}});
         }
@@ -82,7 +81,6 @@ module.exports = {
     },
 
     loadGame : function(req, res){
-        console.log('query', req.query);
         Room.fetch({id:req.query.id}, function(err, resp){
             if(err)
                 return res.json({error:err, result:null});
@@ -99,10 +97,7 @@ module.exports = {
     },
 
     playGame : function(req){
-        // console.log('here', req.isSocket);
-        // if(req.isSocket){
             Room.gameOn({check:true, id:req.body.id}, function(err, resp){
-                console.log('socket');
                 if(err)
                     return res.json({error:err, result:null});
                 else if(resp.gameOne)
@@ -110,9 +105,8 @@ module.exports = {
                 async.waterfall([
                     function(cb){
                         var i = 0;
-                        console.log('inside');
                         var timer = setInterval(function(){
-                            console.log(i, req.body.id);
+                            // console.log(i, req.body.id);
                             Room.message(req.body.id, {tick:i});
                             i++;
                             if(i>30){
@@ -148,7 +142,6 @@ module.exports = {
                     }
                 ]);  
             });
-        // }
     },
 
     submitGaali : function(req, res){
@@ -168,7 +161,6 @@ module.exports = {
                         if(err)
                             return cb('Not Accepted');
                         else if(resp[0]){
-                            console.log(resp);
                             cb(null, resp[0].rated);
                         }
                         else cb('no such gaali');

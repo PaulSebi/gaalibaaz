@@ -44,7 +44,6 @@ module.exports = {
     
     updateRating : function(req, res){
         var ids = [], updates = [];
-        console.log('requested', req.body);
         async.map(req.body, function(val, cb){
             var update = {
                 id : val.id,
@@ -73,7 +72,6 @@ module.exports = {
                 req = req.query;
                 req.not = null;
                 req.select = ['title'];
-                console.log('requested',req);
                 Gaali.restrictedFetch(req, function(err, resp){
                      if(err)
                         return cb({error : err});

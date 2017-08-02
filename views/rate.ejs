@@ -1,9 +1,10 @@
 <div class = "rate">
     <h2>Please Rate the following Gaalis</h2>
+    </h4>1-10</h4>
     <% _.each(gaalis, function(gaali, index){ %>
         
         <div id="div<%= index %>">
-            <h3> <%= gaali.title %> </h3> <input type = "text" > <br>
+            <h3> <%= gaali.title %> </h3> <input type = "number" min="1" max="10"> <br>
             <p hidden><%= gaali.id %></p>
             <span hidden> <%= gaali.rated %> </span>
             <h2 hidden> <%= gaali.ratedBy %> </h2>

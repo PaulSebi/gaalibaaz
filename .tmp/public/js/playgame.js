@@ -34,11 +34,11 @@ $(document).ready(function(){
 function updated(data){
     if(data.newUser){
         var user = data.newUser;
-        $('#users').append('<div id = "user'+(data.total-1)+'"><h3 style="display:inline-block">'+user.username+'</h3><span style="display:inline-block">&nbsp&nbsp|&nbsp&nbsp </span><p style="display:inline-block">'+user.points+'</p><span style="display:inline-block">&nbsp&nbsp|&nbsp&nbsp</span><p style="display:inline-block">'+user.ready+'</p></div><br><br>');
+        $('#users').append('<div id = "user'+(data.total-1)+'"><h3 style="display:inline-block">'+user.username+'</h3><span style="display:inline-block">&nbsp&nbsp|&nbsp&nbsp </span><p style="display:inline-block">'+user.points+'</p><span style="display:inline-block">&nbsp&nbsp|&nbsp&nbsp</span><p style="display:inline-block">'+user.ready==true?'ready':'not ready'+'</p></div><br><br>');
     }
     else if(typeof data.ready=='boolean'){
         var user = document.getElementById('user'+data.index);
-        user.getElementsByTagName('p')[1].innerHTML = data.ready;
+        user.getElementsByTagName('p')[1].innerHTML = data.ready?'ready':'not ready';
     }
     else if(data.start){
         console.log('start playing');

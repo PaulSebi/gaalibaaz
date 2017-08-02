@@ -12,7 +12,7 @@ function login(e) {
         return response.json();
     }).then(function(response) {
         if (response.error) {
-            alert('Wrong Password')
+            alert('User Exists/Wrong Password')
         } else if (response.result) {
             console.log(typeof response.result);
             window.localStorage.setItem('user', JSON.stringify(response.result));
