@@ -14,7 +14,6 @@ Visit http://174.138.45.3:1337/ to see Gaaliyan in action!
 
 Clone the repository in a directory 
 
-    git init
     git clone https://github.com/PaulSebi/gaalibaaz
 
 Install dependancies
