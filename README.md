@@ -6,10 +6,6 @@ Gaaliyan, a realtime multiplayer game that challenges users to cuss each other t
 
 ----------
 
-**See In Action**
-
-Visit http://174.138.45.3:1337/ to see Gaaliyan in action!
-
 **Quick Install**
 
 Clone the repository in a directory 
